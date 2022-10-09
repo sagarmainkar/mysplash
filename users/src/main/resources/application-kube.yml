@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: users
+  datasource:
+    password: password
+    url: jdbc:postgresql://postgres:5432/users
+    username: mysplash
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  zipkin:
+    base-url: http://zipkin:9411

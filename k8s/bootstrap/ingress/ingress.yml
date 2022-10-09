@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mysplash-ingress
+  namespace:  mysplash
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: mysplash.dev
+      http:
+        paths:
+          - path: /zipkin(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: zipkin
+                port:
+                  number: 9411
+
+          - path: /api/v1/images(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: imageservice
+                port:
+                  number: 80
+
+          - path: /api/v1/users(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: users
+                port:
+                  number: 80
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pgadmin
+                port:
+                  number: 80

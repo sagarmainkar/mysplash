@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imageservice
+  namespace: mysplash
+  labels:
+    app: imageservice
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: imageservice
+      labels:
+        app: imageservice
+    spec:
+      containers:
+        - name: imageservice
+          image: sagarmainkar/imageservice:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
+            - name: AZURE_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: AZURE_CONNECTION_STRING
+            - name: AZURE_CONTAINER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: AZURE_CONTAINER_NAME
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: imageservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imageservice
+  namespace: mysplash
+spec:
+  selector:
+    app: imageservice
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP

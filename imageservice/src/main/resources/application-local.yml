@@ -1,0 +1,24 @@
+server:
+  port: 8080
+azure:
+  connection:
+    string: local
+  container:
+    name: local
+spring:
+  application:
+    name: imagesrv
+  datasource:
+    password: password
+    url: jdbc:postgresql://postgres:5432/images
+    username: mysplash
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  zipkin:
+    base-url: http://zipkin:9411

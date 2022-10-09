@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users
+  namespace: mysplash
+  labels:
+    app: users
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: users
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: sagarmainkar/users:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: users
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users
+  namespace: mysplash
+spec:
+  selector:
+    app: users
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP
