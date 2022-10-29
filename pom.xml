@@ -11,6 +11,8 @@
         <module>imageservice</module>
         <module>clients</module>
         <module>users</module>
+        <module>amqp</module>
+        <module>imgprocessor</module>
     </modules>
     <packaging>pom</packaging>
 

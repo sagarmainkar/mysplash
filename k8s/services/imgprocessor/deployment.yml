@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imgprocessor
+  namespace: mysplash
+  labels:
+    app: imgprocessor
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: imgprocessor
+      labels:
+        app: imgprocessor
+    spec:
+      containers:
+        - name: imgprocessor
+          image: sagarmainkar/imgprocessor:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: imgprocessor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imgprocessor
+  namespace: mysplash
+spec:
+  selector:
+    app: imgprocessor
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP

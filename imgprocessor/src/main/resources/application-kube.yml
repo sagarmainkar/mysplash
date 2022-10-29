@@ -1,16 +1,11 @@
 server:
   port: 8080
-azure:
-  connection:
-    string: local
-  container:
-    name: local
 spring:
   application:
-    name: imagesrv
+    name: imgprocessor
   datasource:
     password: password
-    url: jdbc:postgresql://postgres:5432/images
+    url: jdbc:postgresql://postgres:5432/imgprocess
     username: mysplash
   jpa:
     hibernate:
@@ -24,3 +19,11 @@ spring:
     base-url: http://zipkin:9411
   rabbitmq:
     addresses: rabbitmq:5672
+rabbitmq:
+  exchanges:
+    internal: internal.exchange
+  queues:
+    notification: notification.queue
+  routing-keys:
+    internal-notification: internal.notification.routing-key
+

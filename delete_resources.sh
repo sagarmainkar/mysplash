@@ -2,6 +2,7 @@
 
 kubectl delete -f ./k8s/services/imageservice/deployment.yml
 kubectl delete -f ./k8s/services/users/deployment.yml
+kubectl delete -f ./k8s/services/imgprocessor/deployment.yml
 kubectl delete -f ./k8s/bootstrap/postgres/pgadmin-dep.yml
 kubectl delete -f ./k8s/bootstrap/zipkin/statefulset.yml
 kubectl delete -f ./k8s/bootstrap/zipkin/service.yml

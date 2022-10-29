@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,5 +50,19 @@ public class UserService {
 
         return user.get();
 
+    }
+
+    public List<SplashUser> getUsers(){
+        log.info("Getting the list of users ");
+       List<SplashUser> users = userRepository.findAll();
+
+       if (users.size() == 0){
+           log.info("No users found");
+           throw new UserNotFoundException("Please create a user");
+       }
+
+        log.info("Users found returning details for users ");
+
+        return users;
     }
 }

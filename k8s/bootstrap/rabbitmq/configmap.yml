@@ -33,3 +33,4 @@ data:
       ## credentials instead.
       ## Learn more at https://www.rabbitmq.com/access-control.html#loopback-users
       loopback_users.guest = false
+      management.path_prefix = /rabbit

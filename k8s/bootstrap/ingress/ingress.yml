@@ -35,6 +35,14 @@ spec:
                 port:
                   number: 80
 
+          -   path: /rabbit(/|$)(.*)
+              pathType: Prefix
+              backend:
+                service:
+                  name: pgadmin
+                  port:
+                    number: 15672
+
           - path: /
             pathType: Prefix
             backend:

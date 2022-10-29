@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -24,9 +25,7 @@ public class ImageSrvController {
     @PostMapping("/{userId}/upload")
     public ResponseEntity<ImageResource> uploadImage(@PathVariable Integer userId, @RequestParam("image")MultipartFile file) throws IOException {
         log.info("In method ImageSrvController.uploadImage uploading file {}",file.getOriginalFilename());
-        return new ResponseEntity<>(ImageResource.builder()
-                                            .imageName(file.getOriginalFilename())
-                                            .imageUrl(storageService.store(userId,file)).build(),
+        return new ResponseEntity<>(storageService.store(userId,file),
                                     HttpStatus.CREATED);
 
     }
@@ -34,6 +33,13 @@ public class ImageSrvController {
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<ImageResource>> getAllImages(@PathVariable Integer userId){
+        log.info("Fetching all resources for user: {}",userId);
+
+        return new ResponseEntity<>(storageService.getAllResources(userId),HttpStatus.OK);
+
     }
 
     @PostConstruct

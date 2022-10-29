@@ -1,5 +1,8 @@
 package com.mysplash.imagesrv.service.local;
 
+import com.mysplash.imagesrv.dto.ImageResource;
+import com.mysplash.imagesrv.repository.ImageRepository;
+import com.mysplash.imagesrv.service.AbstractStorageService;
 import com.mysplash.imagesrv.service.StorageException;
 import com.mysplash.imagesrv.service.StorageProperties;
 import com.mysplash.imagesrv.service.StorageService;
@@ -19,9 +22,11 @@ import java.nio.file.StandardCopyOption;
 @Service
 @Slf4j
 @Profile("local")
-public class FileSystemStorageService implements StorageService {
+public class FileSystemStorageService extends AbstractStorageService {
 
 	private final Path rootLocation;
+
+
 
 	@Autowired
 	public FileSystemStorageService(StorageProperties properties) {
@@ -29,7 +34,7 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public String store(Integer userId,MultipartFile file) {
+	public ImageResource store(Integer userId, MultipartFile file) {
 		try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file.");
@@ -55,7 +60,17 @@ public class FileSystemStorageService implements StorageService {
 					StandardCopyOption.REPLACE_EXISTING);
 			}
 			log.info("Successfully stored the file {}",file.getOriginalFilename());
-			return this.rootLocation.resolve(file.getOriginalFilename()).toString();
+
+			ImageResource imageResource=ImageResource.builder()
+					.userId(userId)
+					.imageName(file.getOriginalFilename())
+					.imageUrl(this.rootLocation.resolve(file.getOriginalFilename()).toString())
+					.build();
+			imageRepository.saveAndFlush(imageResource);
+
+			log.info("Image details added to DB");
+
+			return imageResource;
 		}
 		catch (IOException e) {
 			throw new StorageException("Failed to store file.", e);

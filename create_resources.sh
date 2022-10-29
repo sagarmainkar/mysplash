@@ -16,3 +16,4 @@ kubectl apply -f ./k8s/bootstrap/zipkin/service.yml
 kubectl apply -f ./k8s/bootstrap/zipkin/statefulset.yml
 kubectl apply -f ./k8s/services/imageservice/deployment.yml
 kubectl apply -f ./k8s/services/users/deployment.yml
+kubectl apply -f ./k8s/services/imgprocessor/deployment.yml
